@@ -46,7 +46,7 @@
     won
     */
     checkForWin(){
-
+        return (document.getElementsByClassName('hide').length === 0)
     }
 
     /**
@@ -55,14 +55,27 @@
     * Checks if player has remaining lives and ends game if player is out
     */
     removeLife(){
-
+        document.getElementsByTagName('img')[this.missed].setAttribute('src', 'images/lostHeart.png')
+        this.missed++
+        if(this.missed === 5){
+            this.gameOver(false)
+        }
     }
 
     /**
     * Displays game over message
     * @param {boolean} gameWon - Whether or not the user won the game
     */
-    gameOver(){
+    gameOver(gameWon){
+        let overlay = document.getElementById('overlay')
+        overlay.style.display = ''
+        if(!gameWon){
+            overlay.className = 'lose'
+            document.getElementById('game-over-message').innerHTML = 'You ran out of attempts and lost'
+        }else{
+            overlay.className = 'win'
+            document.getElementById('game-over-message').innerHTML = 'You WIN!'
+        }
 
     }
 
