@@ -25,17 +25,28 @@
         //return list
     }
 
-    // <ul>
-    //     <li class="hide letter h">h</li>
-    //     <li class="hide letter o">o</li>
-    //     <li class="hide letter w">w</li>
-    //     <li class="space"> </li>
-    //     <li class="hide letter a">a</li>
-    //     <li class="hide letter r">r</li>
-    //     <li class="hide letter e">e</li>
-    //     <li class="space"> </li>
-    //     <li class="hide letter y">y</li>
-    //     <li class="hide letter o">o</li>
-    //     <li class="hide letter u">u</li>
-    // </ul>
+    /**
+    * Checks if passed letter is in phrase
+    * @param (string) letter - Letter to check
+    */
+    checkLetter(letter){
+        for(let i=0; i<this.phrase.length; i++){
+            if(letter === this.phrase[i]){
+                return true
+            }
+        }
+        return false
+    }
+
+    /**
+    * Displays passed letter on screen after a match is found
+    * @param (string) letter - Letter to display
+    */
+    showMatchedLetter(letter){
+        const showLetters = document.getElementsByClassName(`hide letter ${letter}`)
+        const length = showLetters.length
+        for (let i=0; i<length; i++){
+            showLetters[0].className = `show letter ${letter}`
+        }
+    }
  }
