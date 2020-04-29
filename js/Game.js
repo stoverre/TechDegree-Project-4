@@ -7,6 +7,7 @@
         this.missed = 0
         this.phrases = this.createPhrases()
         this.activePhrase = null
+        this.active = false
     }
 
     /**
@@ -26,6 +27,7 @@
     * Begins game by selecting a random phrase and displaying it to user
     */
     startGame() {
+        this.active = true
         //remove all 'li' elements from previous game
         const ul = document.getElementById('phrase').firstElementChild
         const length = ul.children.length
@@ -35,7 +37,7 @@
         //enable all onscreen keyboard buttons
         //indexed at 1 to not touch the reset button
         const buttons = document.getElementsByTagName('button')
-        for(let i=1; i<26; i++){
+        for(let i=1; i<27; i++){
             if(buttons[i].id !== 'btn__reset'){
                 buttons[i].className = 'key'
                 buttons[i].disabled = false
@@ -45,6 +47,11 @@
         const lives = document.getElementsByTagName('img')
         for(let i=0; i<5; i++){
             lives[i].setAttribute('src', 'images/liveHeart.png')
+        }
+        //remove baby yoda image
+        if(document.getElementById('winning-image') != null){
+            document.getElementById('overlay').removeChild(
+                document.getElementById('winning-image'))
         }
         document.getElementById('overlay').style.display = 'none'
         this.activePhrase = this.getRandomPhrase()
@@ -59,8 +66,27 @@
         const randomIndex = Math.floor(Math.random()*5)
         return this.phrases[randomIndex]
     }
-    
+
     /**
+    * Handles onscreen keyboard button clicks
+    * @param (HTMLButtonElement) button - The clicked button element
+    */
+    handleInteraction(button){
+        const letter = button.innerHTML
+        button.disabled = true
+        if(this.activePhrase.checkLetter(letter)){
+            button.className = 'chosen'
+            this.activePhrase.showMatchedLetter(letter)
+            if(this.checkForWin()){
+                this.gameOver(true)
+            }
+        }else{
+            button.className = 'wrong'
+            this.removeLife()
+        }
+    }
+
+     /**
     * Checks for winning move
     * @return {boolean} True if game has been won, false if game wasn't
     won
@@ -95,27 +121,18 @@
         }else{
             overlay.className = 'win'
             document.getElementById('game-over-message').innerHTML = 'You WIN!'
+            //add baby yoda image
+            let gameOverMsg = document.getElementById('game-over-message')
+            let h1 = document.createElement('h1')
+            h1.id = 'winning-image'
+            let winningImage = document.createElement('img')
+            winningImage.src = 'images/babyYoda.jpg'
+            winningImage.alt = 'Happy Baby Yoda'
+            winningImage.height = '163'
+            winningImage.width = '309'
+            h1.appendChild(winningImage)
+            gameOverMsg.parentNode.insertBefore(h1, gameOverMsg.nextElementSibling)
         }
-
-    }
-
-    /**
-    * Handles onscreen keyboard button clicks
-    * @param (HTMLButtonElement) button - The clicked button element
-    */
-    handleInteraction(button){
-        const letter = button.innerHTML
-        button.disabled = true
-        if(this.activePhrase.checkLetter(letter)){
-            button.className = 'chosen'
-            this.activePhrase.showMatchedLetter(letter)
-            if(this.checkForWin()){
-                this.gameOver(true)
-            }
-
-        }else{
-            button.className = 'wrong'
-            this.removeLife()
-        }
+        this.active = false
     }
  }
