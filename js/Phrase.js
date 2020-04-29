@@ -2,11 +2,14 @@
  * Project 4 - OOP Game App
  * Phrase.js */
 
- class Phrase{
+class Phrase{
     constructor(phrase){
         this.phrase = phrase.toLowerCase()
     }
 
+    /**
+     * adds the random phrase to the game board
+     */
     addPhraseToDisplay(){
         let phraseDiv = document.getElementById('phrase')
         let list = phraseDiv.firstElementChild
@@ -22,12 +25,12 @@
                 list.appendChild(letter)
             }
         }
-        //return list
     }
 
     /**
-    * Checks if passed letter is in phrase
+    * Checks if passed letter is in the phrase
     * @param (string) letter - Letter to check
+    * @return (boolean) if the passed letter is in the phrase
     */
     checkLetter(letter){
         for(let i=0; i<this.phrase.length; i++){
@@ -49,4 +52,4 @@
             showLetters[0].className = `show letter ${letter}`
         }
     }
- }
+}

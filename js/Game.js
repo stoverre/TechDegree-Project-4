@@ -2,7 +2,7 @@
  * Project 4 - OOP Game App
  * Game.js */
 
- class Game{
+class Game{
     constructor(){
         this.missed = 0
         this.phrases = this.createPhrases()
@@ -11,7 +11,7 @@
     }
 
     /**
-     * Creates phrases for use in the game
+     * Creates all the phrases for use in the game
      * @return {array} An array of phrases to be used in the game
      */
     createPhrases(){
@@ -23,8 +23,9 @@
         return [phrase0 , phrase1, phrase2, phrase3, phrase4]
     }
 
-     /**
+    /**
     * Begins game by selecting a random phrase and displaying it to user
+    * and initialzes all game states back to default
     */
     startGame() {
         this.active = true
@@ -35,7 +36,7 @@
             ul.removeChild(ul.lastElementChild)
         }
         //enable all onscreen keyboard buttons
-        //indexed at 1 to not touch the reset button
+        //indexed at 1 as to not touch the reset button
         const buttons = document.getElementsByTagName('button')
         for(let i=1; i<27; i++){
             if(buttons[i].id !== 'btn__reset'){
@@ -46,7 +47,7 @@
         //Reset lives
         const lives = document.getElementsByTagName('img')
         for(let i=0; i<5; i++){
-            lives[i].setAttribute('src', 'images/liveHeart.png')
+            lives[i].setAttribute('src', 'images/blueSaber.png')
         }
         //remove baby yoda image
         if(document.getElementById('winning-image') != null){
@@ -59,7 +60,7 @@
     };
 
     /**
-    * Selects random phrase from phrases property
+    * Selects random phrase from the phrases list
     * @return {Object} Phrase object chosen to be used
     */
     getRandomPhrase() {
@@ -86,13 +87,12 @@
         }
     }
 
-     /**
+    /**
     * Checks for winning move
-    * @return {boolean} True if game has been won, false if game wasn't
-    won
+    * @return {boolean} True if game has been won, false if not
     */
     checkForWin(){
-        return (document.getElementsByClassName('hide').length === 0)
+        return document.getElementsByClassName('hide').length === 0
     }
 
     /**
@@ -101,7 +101,7 @@
     * Checks if player has remaining lives and ends game if player is out
     */
     removeLife(){
-        document.getElementsByTagName('img')[this.missed].setAttribute('src', 'images/lostHeart.png')
+        document.getElementsByTagName('img')[this.missed].setAttribute('src', 'images/redSaber.png')
         this.missed++
         if(this.missed === 5){
             this.gameOver(false)
@@ -133,6 +133,7 @@
             h1.appendChild(winningImage)
             gameOverMsg.parentNode.insertBefore(h1, gameOverMsg.nextElementSibling)
         }
+        document.getElementById('btn__reset').innerHTML = 'Start New Game'
         this.active = false
     }
- }
+}
